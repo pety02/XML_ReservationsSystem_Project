@@ -1,0 +1,148 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="transactions">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="transaction">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="reservation">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="room" type="Room"/>
+                                        <xsd:element name="guests">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="guest" type="Guest"
+                                                                 maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="card" type="DebitCard"/>
+                        </xsd:sequence>
+                        <xsd:attribute name="id" type="xsd:integer" use="required"/>
+                        <xsd:attribute name="payingTool" use="required" type="PayingTool"/>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <!-- Helper complex types -->
+    <xsd:complexType name="Hotel">
+        <xsd:sequence>
+            <xsd:element name="address" type="Address"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Price">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="value" type="xsd:float"/>
+                <xsd:attribute name="currency" type="CurrencyName"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:simpleType name="RoomType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="apartment"/>
+            <xsd:enumeration value="single"/>
+            <xsd:enumeration value="double"/>
+            <xsd:enumeration value="deluxe"/>
+            <xsd:enumeration value="president"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="DebitCard">
+        <xsd:sequence>
+            <xsd:element name="iban" type="IBAN"/>
+            <xsd:element name="balance" type="xsd:float"/>
+            <xsd:element name="currency" type="Currency"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="PayingTool">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="by_card"/>
+            <xsd:enumeration value="in_cash"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="Room">
+        <xsd:sequence>
+            <xsd:element name="roomNo" type="xsd:integer"/>
+            <xsd:element name="floorNo" type="xsd:integer"/>
+            <xsd:element name="maxCapacity" type="xsd:string"/>
+            <xsd:element name="hasPersonalBath" type="xsd:boolean"/>
+            <xsd:element name="isAvailable" type="xsd:boolean"/>
+            <xsd:element name="hotel" type="Hotel"/>
+            <xsd:element name="amenities">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="amenity" type="Amenity" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="price" type="Price"/>
+        </xsd:sequence>
+        <xsd:attribute name="type" type="RoomType"/>
+    </xsd:complexType>
+
+    <!-- Helper complex types with validations -->
+    <xsd:simpleType name="Name">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[A-Z][a-z]+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="Email">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\w+@((gmail\.com)|(yahoo\.com)|(hotmail\.com)|(aol\.com)|(outlook\.com)|(comcast\.net)|(icloud\.com)|(msn\.com)|(hotmail\.co\.uk)|(sbcglobal\.net)|(live\.com)|(yahoo\.co\.in)|(me\.com)|(att\.net)|(mail\.ru)|(bellsouth\.net)|(rediffmail\.com)|(cox\.net)|(yahoo\.co\.uk)|(verizon\.net)|(ymail\.com)|(hotmail\.it)|(kw\.com)|(yahoo\.com\.tw)|(mac\.com)|(live\.se)|(live\.nl)|(yahoo\.com\.br)|(googlemail\.com)|(libero\.it)|(web\.de)|(allstate\.com)|(btinternet\.com)|(online\.no)|(yahoo\.com\.au)|(live\.dk)|(earthlink\.net)|(yahoo\.fr)|(yahoo\.it)|(gmx\.de)|(hotmail\.fr)|(shawinc\.com)|(yahoo\.de)|(moe\.edu\.sg)|(163\.com)|(naver\.com)|(bigpond\.com)|(statefarm\.com)|(remax\.net)|(rocketmail\.com)|(live\.no)|(yahoo\.ca)|(bigpond\.net\.au)|(hotmail\.se)|(gmx\.at)|(live\.co\.uk)|(mail\.com)|(yahoo\.in)|(yandex\.ru)|(qq\.com)|(charter\.net)|(indeedemail\.com)|(alice\.it)|(hotmail\.de)|(bluewin\.ch)|(optonline\.net)|(wp\.pl)|(yahoo\.es)|(hotmail\.no)|(pindotmedia\.com)|(orange\.fr)|(live\.it)|(yahoo\.co\.id)|(yahoo\.no)|(hotmail\.es)|(morganstanley\.com)|(wellsfargo\.com)|(juno\.com)|(wanadoo\.fr)|(facebook\.com)|(edwardjones\.com)|(yahoo\.se)|(fema\.dhs\.gov)|(rogers\.com)|(yahoo\.com\.hk)|(live\.com\.au)|(nic\.in)|(nab\.com\.au)|(ubs\.com)|(uol\.com\.br)|(shaw\.ca)|(t-online\.de)|(umich\.edu)|(westpac\.com\.au)|(yahoo\.com\.mx)|(yahoo\.com\.sg)|(farmersagent\.com)|(anz\.com)|(yahoo\.dk)|(dhs\.gov))"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="Phone">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="(\+(359)|0)[0-9]{9}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="Guest">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="name" type="Name" use="required"/>
+                <xsd:attribute name="family" type="Name" use="required"/>
+                <xsd:attribute name="email" type="Email"/>
+                <xsd:attribute name="phone" type="Phone"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:simpleType name="CurrencyName">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\w{3,5}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="Currency">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="name" type="CurrencyName"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:simpleType name="IBAN">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[A-Z]{2}\d{2}[A-Z0-9]{1,30}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="Amenity">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="name" type="Name"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="Address">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="country" type="Name" use="required"/>
+                <xsd:attribute name="town" type="Name" use="required"/>
+                <xsd:attribute name="location" type="xsd:string" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+</xsd:schema>

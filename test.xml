@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<transactions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="reservations.xsd">
+    <transaction id="1" payingTool="by_card">
+        <reservation>
+            <room>
+                <roomNo>101</roomNo>
+                <floorNo>1</floorNo>
+                <maxCapacity>2</maxCapacity>
+                <hasPersonalBath>true</hasPersonalBath>
+                <isAvailable>false</isAvailable>
+                <hotel>
+                    <address country="Bulgaria" town="Plovdiv" location="ul. Malina 123"/>
+                </hotel>
+                <amenities>
+                    <amenity>TV</amenity>
+                    <amenity>Air-Conditioner</amenity>
+                </amenities>
+                <price currency="BGN">400.00</price>
+            </room>
+            <guests>
+                <guest name="Georgi" family="Ivanov" email="givanov@gmail.com" phone="0843589999"/>
+                <guest name="Mihaela" family="Georgieva"/>
+            </guests>
+        </reservation>
+        <card>
+            <iban>BG12FNL89655</iban>
+            <balance>1500.00</balance>
+            <currency>BGN</currency>
+        </card>
+    </transaction>
+</transactions>
