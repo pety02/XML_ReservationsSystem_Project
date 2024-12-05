@@ -1,3 +1,5 @@
+//@ts-check
+
 function generateRoomType() {
     const roomTypes = ["apartment", "single", "double", "deluxe", "president"];
     const randomIndex = Math.floor(Math.random() * roomTypes.length);
@@ -105,25 +107,25 @@ const townsBG = {
 function generateCountry(lang) {
     let randomIndex = 0;
     switch(lang) {
-        case "BG": {
-            randomIndex = Math.floor(Math.random() * countriesBG.length);
-            return countriesBG[randomIndex];
-        }
-        case "EN":
-        default: {
+        case "EN": {
             randomIndex = Math.floor(Math.random() * countriesEN.length);
             return countriesEN[randomIndex];
+        }
+        case "BG":
+        default: {
+            randomIndex = Math.floor(Math.random() * countriesBG.length);
+            return countriesBG[randomIndex];
         }
     }
 }
 
 function generateTown(lang, country) {
     switch (lang) {
-        case "BG": {
+        case "EN": {
             const countryTowns = townsEN[country];
             return countryTowns[Math.floor(Math.random() * countryTowns.length)];
         }
-        case "EN":
+        case "BG":
         default:{
             const countryTowns = townsBG[country];
             return countryTowns[Math.floor(Math.random() * countryTowns.length)];
@@ -161,8 +163,9 @@ function generateLocation(lang) {
 
 function generateAddress(htmlDoc, lang) {
     const addressElement = htmlDoc.createElement('address');
-    addressElement.setAttribute('country', generateCountry(lang));
-    addressElement.setAttribute('town', generateTown(lang));
+    const country = generateCountry(lang);
+    addressElement.setAttribute('country', country);
+    addressElement.setAttribute('town', generateTown(lang, country));
     addressElement.setAttribute('location', generateLocation(lang));
 
     return addressElement;
@@ -174,13 +177,13 @@ function generateHotel(htmlDoc, lang) {
     const hotelNameTextNode = htmlDoc.createTextNode(generateHotelName(lang));
     hotelNameElement.appendChild(hotelNameTextNode);
     hotelElement.appendChild(hotelNameElement);
-    const hotelAddressElement = generateAddress(htmlDoc, hotelElement);
+    const hotelAddressElement = generateAddress(htmlDoc, lang);
     hotelElement.appendChild(hotelAddressElement);
 
     return hotelElement;
 }
 
-function generateRoom(htmlDoc, lang, roomMaxCapacity, type, floorsCount, amenitiesCount) {
+function generateRoom(htmlDoc, lang, min, max, roomMaxCapacity, type, roomsCount, floorsCount, amenitiesCount) {
     const roomElement = htmlDoc.createElement('room');
 
     const roomNoElement = htmlDoc.createElement('roomNo');
@@ -192,8 +195,9 @@ function generateRoom(htmlDoc, lang, roomMaxCapacity, type, floorsCount, ameniti
     roomElement.appendChild(floorNoElement);
 
     const maxCapacityElement = htmlDoc.createElement('maxCapacity');
+    console.log(roomMaxCapacity);
     maxCapacityElement.appendChild(htmlDoc.createTextNode(roomMaxCapacity));
-    roomNoElement.appendChild(maxCapacityElement);
+    roomElement.appendChild(maxCapacityElement);
 
     const hasPersonalBathElement = htmlDoc.createElement('hasPersonalBath');
     hasPersonalBathElement.appendChild(htmlDoc.createTextNode(Math.random() <= 0.5 ? "false" : "true"));
@@ -209,12 +213,12 @@ function generateRoom(htmlDoc, lang, roomMaxCapacity, type, floorsCount, ameniti
     const amenitiesElement = htmlDoc.createElement('amenities');
     for (let i = 0; i < amenitiesCount; i++) {
         const amenityElement = htmlDoc.createElement('amenity');
-        amenityElement.appendChild(generateAmenity(lang));
+        amenityElement.appendChild(htmlDoc.createTextNode(generateAmenity(lang)));
         amenitiesElement.appendChild(amenityElement);
     }
     roomElement.appendChild(amenitiesElement);
 
-    const priceElement = generatePrice(htmlDoc, lang);
+    const priceElement = generatePrice(htmlDoc, lang, min, max);
     roomElement.appendChild(priceElement);
 
     const typeElement = htmlDoc.createElement('type');
@@ -224,34 +228,34 @@ function generateRoom(htmlDoc, lang, roomMaxCapacity, type, floorsCount, ameniti
     return roomElement;
 }
 
-function generateGuest(htmlDoc) {
+function generateGuest(htmlDoc, lang) {
     const guestElement = htmlDoc.createElement('guest');
 
     const nameElement = htmlDoc.createElement('name');
-    nameElement.appendChild(htmlDoc.createTextNode(generateName(htmlDoc)));
+    const name = generateName(lang);
+    nameElement.appendChild(htmlDoc.createTextNode(name));
     guestElement.appendChild(nameElement);
 
     const familyElement = htmlDoc.createElement('family');
-    familyElement.appendChild(htmlDoc.createTextNode(generateFamily(htmlDoc)));
+    const family = generateFamily(lang);
+    familyElement.appendChild(htmlDoc.createTextNode(family));
     guestElement.appendChild(familyElement);
 
     const emailElement = htmlDoc.createElement('email');
-    emailElement.appendChild(htmlDoc.createTextNode(generateEmail(htmlDoc)));
+    emailElement.appendChild(htmlDoc.createTextNode(generateEmail(name, family)));
     guestElement.appendChild(emailElement);
 
     const phoneElement = htmlDoc.createElement('phone');
-    phoneElement.appendChild(htmlDoc.createTextNode(generatePhone(htmlDoc)));
+    phoneElement.appendChild(htmlDoc.createTextNode(generatePhone()));
     guestElement.appendChild(phoneElement);
 
     return guestElement;
 }
 
-function generatePayingTool(htmlDoc) {
+function generatePayingTool() {
     const tools = ["by_card", "in_cash"];
-    const payingToolElement = htmlDoc.createElement('payingTool');
-    payingToolElement.appendChild(htmlDoc.createTextNode(tools[Math.floor(Math.random() * tools.length)]));
-
-    return payingToolElement;
+    const randomIndex = Math.floor(Math.random() * tools.length);
+    return tools[randomIndex];
 }
 
 function generateIBAN(htmlDoc) {
@@ -279,7 +283,7 @@ function generateIBAN(htmlDoc) {
         "SS12345678912345678912345678", "TZ1234567890123456789012", "UG12345678901234567890123456"];
 
     const IBANElement = htmlDoc.createElement('IBAN');
-    const randomIndex = Math.random() * IBANs.length;
+    const randomIndex = Math.floor(Math.random() * IBANs.length);
     IBANElement.appendChild(htmlDoc.createTextNode(IBANs[randomIndex]));
 
     return IBANElement;
@@ -296,7 +300,7 @@ function generateCurrencyName(htmlDoc) {
     const currencies = ["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNY", "SEK", "NZD"];
 
     const nameElement = htmlDoc.createElement('name');
-    const randomIndex = Math.random() * currencies.length;
+    const randomIndex = Math.floor(Math.random() * currencies.length);
     nameElement.appendChild(htmlDoc.createTextNode(currencies[randomIndex]));
 
     return nameElement;
@@ -304,8 +308,8 @@ function generateCurrencyName(htmlDoc) {
 
 function generateCurrency(htmlDoc) {
     const currencyElement = htmlDoc.createElement('currency');
-    const nameElement = generateCurrencyName(htmlDoc);
-    currencyElement.appendChild(nameElement);
+    const name = generateCurrencyName(htmlDoc);
+    currencyElement.appendChild(name);
 
     return currencyElement;
 }
@@ -320,6 +324,8 @@ function generatePriceValue(htmlDoc, min, max) {
 function generatePrice(htmlDoc, lang, min, max) {
     const priceElement = htmlDoc.createElement('price');
 
+    console.log(min);
+    console.log(max);
     const valueElement = generatePriceValue(htmlDoc, min, max);
     priceElement.appendChild(valueElement);
 
@@ -344,48 +350,129 @@ function generateDebitCard(htmlDoc, min, max) {
     return debitCardElement;
 }
 
-function generateName(htmlDoc, lang) {
+function generateName(lang) {
+    const bulgarianNames = ["Иван", "Мария", "Георги", "Елена", "Николай", "Ана", "Петър", "Десислава", "Стефан", "Радка",
+        "Калоян", "Силвия", "Борис", "Цветелина", "Тодор", "Виолета", "Димитър", "Лиляна", "Кристиян", "Веселина",
+        "Александър", "Надя", "Симеон", "Магдалена", "Мартин", "Стефания", "Христо", "Габриела", "Васил", "Яна",
+        "Михаил", "Жени", "Стоян", "Вероника", "Ангел", "Калина", "Кирил", "Людмила", "Пламен", "Биляна",
+        "Йоан", "Румяна", "Антон", "Ваня", "Златко", "Катя", "Невена", "Лазар", "Соня", "Тихомир"
+    ];
 
+    const englishNames = ["John", "Mary", "George", "Helen", "Nicholas", "Anna", "Peter", "Sophia", "Stephen", "Ruth",
+        "Caleb", "Sylvia", "Boris", "Cynthia", "Theodore", "Violet", "Matthew", "Lillian", "Christian", "Joyce",
+        "Alexander", "Nadia", "Simon", "Magdalene", "Martin", "Stephanie", "Christopher", "Gabriella", "William", "Diana",
+        "Michael", "Jennifer", "Stanley", "Veronica", "Angel", "Karen", "Cyril", "Lucy", "Patrick", "Belinda",
+        "Evan", "Ramona", "Anthony", "Wendy", "Zachary", "Katie", "Nina", "Lawrence", "Sonia", "Timothy"
+    ];
+
+    console.log(lang);
+    let randomIndex = 0;
+    if (lang === "BG") {
+        randomIndex = Math.floor(Math.random() * bulgarianNames.length);
+        return bulgarianNames[randomIndex];
+    } else {
+        randomIndex = Math.floor(Math.random() * englishNames.length);
+        return englishNames[randomIndex];
+    }
 }
 
-function generateFamily(htmlDoc, lang) {
+function generateFamily(lang) {
+    const bulgarianFamilies = ["Иванов", "Петров", "Стоянов", "Димитров", "Георгиев", "Николов", "Христов",
+        "Тодоров", "Караиванов", "Ангелов", "Маринов", "Василев", "Радев", "Славчев", "Златев", "Милев", "Колев",
+        "Бонев", "Ганев", "Симеонов", "Александров", "Грозданов", "Илиев", "Кирилов", "Лазаров", "Цветков", "Янакиев",
+        "Трифонов", "Чавдаров", "Драганов", "Богданов", "Жеков", "Кабаков", "Манолов", "Недев", "Огнянов", "Петков",
+        "Русев", "Станчев", "Томов", "Филипов", "Хаджиев", "Цанев", "Шишков", "Щерев", "Юрков", "Янков", "Вълков",
+        "Добрев", "Захариев"];
 
+    const englishFamilies = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis",
+        "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore",
+        "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis",
+        "Robinson", "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", "Green",
+        "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts"
+    ];
+
+    let randomIndex = 0;
+    if (lang === "BG") {
+        randomIndex = Math.floor(Math.random() * bulgarianFamilies.length);
+        return bulgarianFamilies[randomIndex];
+    } else {
+        randomIndex = Math.floor(Math.random() * englishFamilies.length);
+        return englishFamilies[randomIndex];
+    }
 }
 
-function generatePhone(htmlDoc) {
+function generatePhone() {
+    const phones = ["+359887654321", "0887654321", "+359889123456", "0889123456", "+359878456789", "0878456789",
+        "+359876543210", "0876543210", "+359889876543", "0889876543", "+359878123456", "0878123456", "+359877654321",
+        "0877654321", "+359889654321", "0889654321", "+359878987654", "0878987654", "+359876123456", "0876123456",
+        "+359877456789", "0877456789", "+359888765432", "0888765432", "+359877876543", "0877876543", "+359888654321",
+        "0888654321", "+359876987654"];
 
+    const randomIndex = Math.floor(Math.random() * phones.length);
+    return phones[randomIndex];
 }
 
-function generateEmail(htmlDoc) {
+function translateBulgarianToEnglish(firstName, secondName) {
+    const bulgarianToEnglishMap = {
+        'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ж': 'Zh',
+        'З': 'Z', 'И': 'I', 'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N',
+        'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F',
+        'Х': 'H', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Sht', 'Ъ': 'A',
+        'Ь': 'Y', 'Ю': 'Yu', 'Я': 'Ya', 'а': 'a', 'б': 'b', 'в': 'v',
+        'г': 'g', 'д': 'd', 'е': 'e', 'ж': 'zh', 'з': 'z', 'и': 'i',
+        'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
+        'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f',
+        'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sht',
+        'ъ': 'a', 'ь': 'y', 'ю': 'yu', 'я': 'ya'
+    };
 
+    function translateName(name) {
+        return name.split('').map(char => bulgarianToEnglishMap[char] || char).join('');
+    }
+
+    return {
+        translatedFirstName: translateName(firstName),
+        translatedSecondName: translateName(secondName)
+    };
 }
 
-function generateReservation(htmlDoc, lang, type, roomMaxCapacity, floorsCount, amenitiesCount) {
+function generateEmail(name, family) {
+    const domains = ["@gmail.com", "@yahoo.com", "@hotmail.com", "@aol.com", "@outlook.com", "@icloud.com",
+        "@live.com", "@hotmail.co.uk", "@sbcglobal.net", "@me.com", "@att.net", "@mail.ru", "@bellsouth.net",
+        "@rediffmail.com", "@cox.net"];
+
+    const translatedNames = translateBulgarianToEnglish(name, family);
+
+    const randomIndex = Math.floor(Math.random() * domains.length);
+    return translatedNames.translatedFirstName + "." + translatedNames.translatedSecondName + domains[randomIndex];
+}
+
+function generateReservation(htmlDoc, lang, min, max, type, roomMaxCapacity, roomsCount, floorsCount, amenitiesCount) {
     const reservationElement = htmlDoc.createElement('reservation');
 
-    const roomElement = generateRoom(htmlDoc, lang, type, roomMaxCapacity, floorsCount, amenitiesCount);
+    const roomElement = generateRoom(htmlDoc, lang, min, max, roomMaxCapacity, type, roomsCount, floorsCount, amenitiesCount);
     reservationElement.appendChild(roomElement);
     const guestsElement = htmlDoc.createElement('guests');
     reservationElement.appendChild(guestsElement);
 
     for (let i = 0; i < roomMaxCapacity; i++) {
-        const guestElement = generateGuest(htmlDoc);
+        const guestElement = generateGuest(htmlDoc, lang);
         guestsElement.appendChild(guestElement);
     }
 
     return reservationElement;
 }
 
-function generateTransaction(htmlDoc, lang, floorsCount, amenitiesCount, minPrice, maxPrice) {
+function generateTransaction(htmlDoc, lang, min, max, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice) {
     const transactionIDStep = 1000;
     const roomType = generateRoomType();
     const roomMaxCapacity = generateRoomMaxCapacity(roomType);
 
     const transactionElement = htmlDoc.createElement('transaction');
     transactionElement.setAttribute('id', Math.random() * transactionIDStep);
-    transactionElement.setAttribute('payingTool', generatePayingTool(htmlDoc));
+    transactionElement.setAttribute('payingTool', generatePayingTool());
 
-    const reservationElement = generateReservation(htmlDoc, lang, roomType, roomMaxCapacity, floorsCount, amenitiesCount);
+    const reservationElement = generateReservation(htmlDoc, lang, min, max, roomType, roomMaxCapacity, roomsCount, floorsCount, amenitiesCount);
     transactionElement.appendChild(reservationElement);
 
     const cardElement = generateDebitCard(htmlDoc, minPrice, maxPrice);
@@ -394,6 +481,96 @@ function generateTransaction(htmlDoc, lang, floorsCount, amenitiesCount, minPric
     return transactionElement;
 }
 
-function generateFirstSpecimen(htmlDoc) {
+const documentImplementation= document.implementation;
+const htmlDoc = documentImplementation.createDocument(null, null);
+const lang = "BG";
 
+function generateFirstSpecimen() {
+    const roomsCount = 150;
+    const floorsCount = 10;
+    const amenitiesCount = 10;
+    const minPrice = 200.00;
+    const maxPrice = 1000.00;
+
+    const rootElement = htmlDoc.createElement('transactions');
+    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
+    rootElement.appendChild(transactionElement);
+
+    const parser = new XMLSerializer();
+    const label = document.getElementById("specimenLbl");
+    label.innerText = parser.serializeToString(rootElement);
+    label.style.color = "red";
+    console.log(rootElement);
+}
+
+function generateSecondSpecimen() {
+    const roomsCount = 50;
+    const floorsCount = 5;
+    const amenitiesCount = 2;
+    const minPrice = 50.00;
+    const maxPrice = 150.00;
+
+    const rootElement = htmlDoc.createElement('transactions');
+    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
+    rootElement.appendChild(transactionElement);
+
+    const parser = new XMLSerializer();
+    const label = document.getElementById("specimenLbl");
+    label.innerText = parser.serializeToString(rootElement);
+    label.style.color = "green";
+    console.log(rootElement);
+}
+
+function generateThirdSpecimen() {
+    const roomsCount = 20;
+    const floorsCount = 3;
+    const amenitiesCount = 5;
+    const minPrice = 85.00;
+    const maxPrice = 360.00;
+
+    const rootElement = htmlDoc.createElement('transactions');
+    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
+    rootElement.appendChild(transactionElement);
+
+    const parser = new XMLSerializer();
+    const label = document.getElementById("specimenLbl");
+    label.innerText = parser.serializeToString(rootElement);
+    label.style.color = "blue";
+    console.log(rootElement);
+}
+
+function generateFourthSpecimen() {
+    const roomsCount = 100;
+    const floorsCount = 20;
+    const amenitiesCount = 10;
+    const minPrice = 1000.00;
+    const maxPrice = 1500.00;
+
+    const rootElement = htmlDoc.createElement('transactions');
+    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
+    rootElement.appendChild(transactionElement);
+
+    const parser = new XMLSerializer();
+    const label = document.getElementById("specimenLbl");
+    label.innerText = parser.serializeToString(rootElement);
+    label.style.color = "black";
+    console.log(rootElement);
+}
+
+function generateFifthSpecimen() {
+    const roomsCount = 5;
+    const floorsCount = 1;
+    const amenitiesCount = 4;
+    const minPrice = 10.00;
+    const maxPrice = 50.00;
+
+    const rootElement = htmlDoc.createElement('transactions');
+    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
+    rootElement.appendChild(transactionElement);
+
+    const parser = new XMLSerializer();
+    const label = document.getElementById("specimenLbl");
+    label.innerText = parser.serializeToString(rootElement);
+    label.style.color = "orange";
+    console.log(rootElement);
 }
