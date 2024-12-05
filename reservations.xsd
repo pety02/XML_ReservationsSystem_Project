@@ -33,6 +33,7 @@
     <!-- Helper complex types -->
     <xsd:complexType name="Hotel">
         <xsd:sequence>
+            <xsd:element name="name" type="Name"/>
             <xsd:element name="address" type="Address"/>
         </xsd:sequence>
     </xsd:complexType>
@@ -89,7 +90,7 @@
     <!-- Helper complex types with validations -->
     <xsd:simpleType name="Name">
         <xsd:restriction base="xsd:string">
-            <xsd:pattern value="[A-Z][a-z]+"/>
+            <xsd:pattern value="([A-Z][a-z]+)|([А-Я](а-я)+)"/>
         </xsd:restriction>
     </xsd:simpleType>
     <xsd:simpleType name="Email">

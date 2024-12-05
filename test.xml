@@ -12,6 +12,7 @@
                 <hasPersonalBath>true</hasPersonalBath>
                 <isAvailable>false</isAvailable>
                 <hotel>
+                    <name>Paradise</name>
                     <address country="Bulgaria" town="Plovdiv" location="ul. Malina 123"/>
                 </hotel>
                 <amenities>
