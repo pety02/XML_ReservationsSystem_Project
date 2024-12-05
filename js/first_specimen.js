@@ -195,7 +195,6 @@ function generateRoom(htmlDoc, lang, min, max, roomMaxCapacity, type, roomsCount
     roomElement.appendChild(floorNoElement);
 
     const maxCapacityElement = htmlDoc.createElement('maxCapacity');
-    console.log(roomMaxCapacity);
     maxCapacityElement.appendChild(htmlDoc.createTextNode(roomMaxCapacity));
     roomElement.appendChild(maxCapacityElement);
 
@@ -324,8 +323,6 @@ function generatePriceValue(htmlDoc, min, max) {
 function generatePrice(htmlDoc, lang, min, max) {
     const priceElement = htmlDoc.createElement('price');
 
-    console.log(min);
-    console.log(max);
     const valueElement = generatePriceValue(htmlDoc, min, max);
     priceElement.appendChild(valueElement);
 
@@ -365,7 +362,6 @@ function generateName(lang) {
         "Evan", "Ramona", "Anthony", "Wendy", "Zachary", "Katie", "Nina", "Lawrence", "Sonia", "Timothy"
     ];
 
-    console.log(lang);
     let randomIndex = 0;
     if (lang === "BG") {
         randomIndex = Math.floor(Math.random() * bulgarianNames.length);
@@ -500,7 +496,6 @@ function generateFirstSpecimen() {
     const label = document.getElementById("specimenLbl");
     label.innerText = parser.serializeToString(rootElement);
     label.style.color = "red";
-    console.log(rootElement);
 }
 
 function generateSecondSpecimen() {
@@ -518,7 +513,6 @@ function generateSecondSpecimen() {
     const label = document.getElementById("specimenLbl");
     label.innerText = parser.serializeToString(rootElement);
     label.style.color = "green";
-    console.log(rootElement);
 }
 
 function generateThirdSpecimen() {
@@ -536,7 +530,6 @@ function generateThirdSpecimen() {
     const label = document.getElementById("specimenLbl");
     label.innerText = parser.serializeToString(rootElement);
     label.style.color = "blue";
-    console.log(rootElement);
 }
 
 function generateFourthSpecimen() {
@@ -554,7 +547,6 @@ function generateFourthSpecimen() {
     const label = document.getElementById("specimenLbl");
     label.innerText = parser.serializeToString(rootElement);
     label.style.color = "black";
-    console.log(rootElement);
 }
 
 function generateFifthSpecimen() {
@@ -572,5 +564,4 @@ function generateFifthSpecimen() {
     const label = document.getElementById("specimenLbl");
     label.innerText = parser.serializeToString(rootElement);
     label.style.color = "orange";
-    console.log(rootElement);
 }
