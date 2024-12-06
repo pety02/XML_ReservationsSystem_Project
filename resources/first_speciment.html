@@ -3,14 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="../js/first_specimen.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="../js/first_specimen.js" type="module" defer></script>
+
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: nowrap; /* Adjust to `wrap` if you want them to wrap on small screens */
+            gap: 2rem; /* Space between cards */
+            margin-top: 2rem;
+        }
+        .card {
+            flex: 0 0 auto; /* Prevent cards from shrinking */
+            border: 1px solid #ddd; /* Optional: Add a border to the cards */
+            padding: 1rem; /* Optional: Add padding inside cards */
+            color: red;
+        }
+    </style>
 </head>
 <body>
-<button onclick="generateFirstSpecimen()">Generate First Specimen</button>
-<button onclick="generateSecondSpecimen()">Generate Second Specimen</button>
-<button onclick="generateThirdSpecimen()">Generate Third Specimen</button>
-<button onclick="generateFourthSpecimen()">Generate Fourth Specimen</button>
-<button onclick="generateFifthSpecimen()">Generate Fifth Specimen</button>
-<p id="specimenLbl"></p>
+<div class="card-container" style="margin-left: 4rem;">
+    <div class="card">
+        <button class="btn btn-primary" onclick="generateFirstSpecimen()">Generate First Specimen</button>
+        <div class="card-header">
+            <h1>First Hotel</h1>
+        </div>
+        <div class="card-body" style="color:black;">
+            <p>Rooms Count: 150</p>
+            <p>Floors Count: 10</p>
+            <p>Amenities Count: 10</p>
+            <p>Min Price: 200.00</p>
+            <p>Max Price: 1000.00</p>
+            <p>Currency Name: BGN</p>
+        </div>
+    </div>
+    <div class="card">
+        <button class="btn btn-primary" onclick="generateSecondSpecimen()">Generate Second Specimen</button>
+        <div class="card-header">
+            <h1>First Hotel</h1>
+        </div>
+        <div class="card-body" style="color:black;">
+            <p>Rooms Count: 150</p>
+            <p>Floors Count: 10</p>
+            <p>Amenities Count: 10</p>
+            <p>Min Price: 200.00</p>
+            <p>Max Price: 1000.00</p>
+            <p>Currency Name: BGN</p>
+        </div>
+    </div>
+    <div class="card">
+        <button class="btn btn-primary" onclick="generateThirdSpecimen()">Generate Third Specimen</button>
+        <div class="card-header">
+            <h1>First Hotel</h1>
+        </div>
+        <div class="card-body" style="color:black;">
+            <p>Rooms Count: 150</p>
+            <p>Floors Count: 10</p>
+            <p>Amenities Count: 10</p>
+            <p>Min Price: 200.00</p>
+            <p>Max Price: 1000.00</p>
+            <p>Currency Name: BGN</p>
+        </div>
+    </div>
+    <div class="card">
+        <button class="btn btn-primary" onclick="generateFourthSpecimen()">Generate Fourth Specimen</button>
+        <div class="card-header">
+            <h1>First Hotel</h1>
+        </div>
+        <div class="card-body" style="color:black;">
+            <p>Rooms Count: 150</p>
+            <p>Floors Count: 10</p>
+            <p>Amenities Count: 10</p>
+            <p>Min Price: 200.00</p>
+            <p>Max Price: 1000.00</p>
+            <p>Currency Name: BGN</p>
+        </div>
+    </div>
+    <div class="card">
+        <button class="btn btn-primary" onclick="generateFifthSpecimen()">Generate Fifth Specimen</button>
+        <div class="card-header">
+            <h1>First Hotel</h1>
+        </div>
+        <div class="card-body" style="color:black;">
+            <p>Rooms Count: 150</p>
+            <p>Floors Count: 10</p>
+            <p>Amenities Count: 10</p>
+            <p>Min Price: 200.00</p>
+            <p>Max Price: 1000.00</p>
+            <p>Currency Name: BGN</p>
+        </div>
+    </div>
+</div>
+<h2 style="margin-left: 4rem;" id="specimenHeader"></h2>
+<p style="margin-top: 2rem; margin-left: 4rem;" id="specimenParagraph"></p>
 </body>
 </html>

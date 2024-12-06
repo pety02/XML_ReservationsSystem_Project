@@ -1,5 +1,3 @@
-//@ts-check
-
 function generateRoomType() {
     const roomTypes = ["apartment", "single", "double", "deluxe", "president"];
     const randomIndex = Math.floor(Math.random() * roomTypes.length);
@@ -16,12 +14,17 @@ function generateFloorNo(floorsCount) {
 
 function generateRoomMaxCapacity(roomType) {
     switch (roomType) {
-        case "apartment": return 8;
-        case "double": return 2;
-        case "deluxe": return 4;
-        case "president": return 2;
+        case "apartment":
+            return 8;
+        case "double":
+            return 2;
+        case "deluxe":
+            return 4;
+        case "president":
+            return 2;
         case "single":
-        default: return 1;
+        default:
+            return 1;
     }
 }
 
@@ -34,7 +37,7 @@ function generateAmenity(lang) {
         "Desk", "Elevator", "Fitness", "Beach", "Tennis", "Cinema", "Golf", "Boutique"];
 
     let randomIndex = 0;
-    switch(lang) {
+    switch (lang) {
         case "BG": {
             randomIndex = Math.floor(Math.random() * amenitiesInBG.length);
             return amenitiesInBG[randomIndex];
@@ -57,7 +60,7 @@ function generateHotelName(lang) {
         "Galaxy", "Moon", "Star", "Tropic", "Samokov", "Delta", "Prestige", "Comfort", "Energy", "Modern", "Seagull"];
 
     let randomIndex = 0;
-    switch(lang) {
+    switch (lang) {
         case "BG": {
             randomIndex = Math.floor(Math.random() * hotelNamesBG.length);
             return hotelNamesBG[randomIndex];
@@ -106,7 +109,7 @@ const townsBG = {
 
 function generateCountry(lang) {
     let randomIndex = 0;
-    switch(lang) {
+    switch (lang) {
         case "EN": {
             randomIndex = Math.floor(Math.random() * countriesEN.length);
             return countriesEN[randomIndex];
@@ -126,7 +129,7 @@ function generateTown(lang, country) {
             return countryTowns[Math.floor(Math.random() * countryTowns.length)];
         }
         case "BG":
-        default:{
+        default: {
             const countryTowns = townsBG[country];
             return countryTowns[Math.floor(Math.random() * countryTowns.length)];
         }
@@ -220,33 +223,24 @@ function generateRoom(htmlDoc, lang, min, max, roomMaxCapacity, type, roomsCount
     const priceElement = generatePrice(htmlDoc, lang, min, max);
     roomElement.appendChild(priceElement);
 
-    const typeElement = htmlDoc.createElement('type');
-    typeElement.appendChild(htmlDoc.createTextNode(type));
-    roomElement.appendChild(typeElement);
-
+    roomElement.setAttribute('type', type);
     return roomElement;
 }
 
 function generateGuest(htmlDoc, lang) {
     const guestElement = htmlDoc.createElement('guest');
 
-    const nameElement = htmlDoc.createElement('name');
     const name = generateName(lang);
-    nameElement.appendChild(htmlDoc.createTextNode(name));
-    guestElement.appendChild(nameElement);
+    guestElement.setAttribute('name', name);
 
-    const familyElement = htmlDoc.createElement('family');
     const family = generateFamily(lang);
-    familyElement.appendChild(htmlDoc.createTextNode(family));
-    guestElement.appendChild(familyElement);
+    guestElement.setAttribute('family', family);
 
-    const emailElement = htmlDoc.createElement('email');
-    emailElement.appendChild(htmlDoc.createTextNode(generateEmail(name, family)));
-    guestElement.appendChild(emailElement);
+    const email = generateEmail(name, family);
+    guestElement.setAttribute('email', email);
 
-    const phoneElement = htmlDoc.createElement('phone');
-    phoneElement.appendChild(htmlDoc.createTextNode(generatePhone()));
-    guestElement.appendChild(phoneElement);
+    const phone = generatePhone();
+    guestElement.setAttribute('phone', phone);
 
     return guestElement;
 }
@@ -281,7 +275,7 @@ function generateIBAN(htmlDoc) {
         "GQ7050002001010843110111", "GW04GW143001015301081501363", "DJ2110002010010409943020008", "BI43201011067444", "SO1230000001234567891",
         "SS12345678912345678912345678", "TZ1234567890123456789012", "UG12345678901234567890123456"];
 
-    const IBANElement = htmlDoc.createElement('IBAN');
+    const IBANElement = htmlDoc.createElement('iban');
     const randomIndex = Math.floor(Math.random() * IBANs.length);
     IBANElement.appendChild(htmlDoc.createTextNode(IBANs[randomIndex]));
 
@@ -297,37 +291,25 @@ function generateBalance(htmlDoc, min, max) {
 
 function generateCurrencyName(htmlDoc) {
     const currencies = ["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNY", "SEK", "NZD"];
-
-    const nameElement = htmlDoc.createElement('name');
     const randomIndex = Math.floor(Math.random() * currencies.length);
-    nameElement.appendChild(htmlDoc.createTextNode(currencies[randomIndex]));
 
-    return nameElement;
+    return currencies[randomIndex];
 }
 
 function generateCurrency(htmlDoc) {
-    const currencyElement = htmlDoc.createElement('currency');
-    const name = generateCurrencyName(htmlDoc);
-    currencyElement.appendChild(name);
-
-    return currencyElement;
+    return generateCurrencyName(htmlDoc);
 }
 
 function generatePriceValue(htmlDoc, min, max) {
-    const valueElement = htmlDoc.createElement('value');
-    valueElement.appendChild(htmlDoc.createTextNode(Math.random() * (max - min) + min));
-
-    return valueElement;
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 function generatePrice(htmlDoc, lang, min, max) {
     const priceElement = htmlDoc.createElement('price');
+    priceElement.setAttribute('currency', generateCurrency(htmlDoc));
 
-    const valueElement = generatePriceValue(htmlDoc, min, max);
-    priceElement.appendChild(valueElement);
-
-    const currencyElement = generateCurrency(htmlDoc);
-    priceElement.appendChild(currencyElement);
+    const value = generatePriceValue(htmlDoc, min, max);
+    priceElement.appendChild(htmlDoc.createTextNode(value));
 
     return priceElement;
 }
@@ -341,8 +323,8 @@ function generateDebitCard(htmlDoc, min, max) {
     const balanceElement = generateBalance(htmlDoc, min, max);
     debitCardElement.appendChild(balanceElement);
 
-    const currencyElement = generateCurrency(htmlDoc);
-    debitCardElement.appendChild(currencyElement);
+    const currency = generateCurrency(htmlDoc);
+    debitCardElement.setAttribute('currency', currency)
 
     return debitCardElement;
 }
@@ -465,7 +447,7 @@ function generateTransaction(htmlDoc, lang, min, max, roomsCount, floorsCount, a
     const roomMaxCapacity = generateRoomMaxCapacity(roomType);
 
     const transactionElement = htmlDoc.createElement('transaction');
-    transactionElement.setAttribute('id', Math.random() * transactionIDStep);
+    transactionElement.setAttribute('id', Math.floor(Math.random() * transactionIDStep));
     transactionElement.setAttribute('payingTool', generatePayingTool());
 
     const reservationElement = generateReservation(htmlDoc, lang, min, max, roomType, roomMaxCapacity, roomsCount, floorsCount, amenitiesCount);
@@ -477,9 +459,34 @@ function generateTransaction(htmlDoc, lang, min, max, roomsCount, floorsCount, a
     return transactionElement;
 }
 
-const documentImplementation= document.implementation;
+const documentImplementation = document.implementation;
 const htmlDoc = documentImplementation.createDocument(null, null);
+
+const PItext = "version=\"1.0\" encoding=\"UTF-8\"";
+const processingInstructions = htmlDoc.createProcessingInstruction('xml', PItext);
+htmlDoc.insertBefore(processingInstructions, htmlDoc.documentElement);
+
 const lang = "BG";
+
+function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename) {
+    const rootElement = htmlDoc.createElement('transactions');
+    rootElement.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+    rootElement.setAttribute('xsi:noNamespaceSchemaLocation', 'reservations.xsd');
+    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
+    rootElement.appendChild(transactionElement);
+
+    const parser = new XMLSerializer();
+
+    const header = document.getElementById("specimenHeader");
+    header.innerText = "First Hotel Specimen:\n";
+    header.style.color = "green";
+
+    const label = document.getElementById("specimenParagraph");
+    htmlDoc.appendChild(rootElement);
+    const xmlContent = parser.serializeToString(htmlDoc);
+    label.innerText = xmlContent;
+    downloadXMLFile(xmlContent, filename);
+}
 
 function generateFirstSpecimen() {
     const roomsCount = 150;
@@ -487,15 +494,9 @@ function generateFirstSpecimen() {
     const amenitiesCount = 10;
     const minPrice = 200.00;
     const maxPrice = 1000.00;
+    const filename = "firstSpecimen";
 
-    const rootElement = htmlDoc.createElement('transactions');
-    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
-    rootElement.appendChild(transactionElement);
-
-    const parser = new XMLSerializer();
-    const label = document.getElementById("specimenLbl");
-    label.innerText = parser.serializeToString(rootElement);
-    label.style.color = "red";
+    generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename);
 }
 
 function generateSecondSpecimen() {
@@ -504,15 +505,9 @@ function generateSecondSpecimen() {
     const amenitiesCount = 2;
     const minPrice = 50.00;
     const maxPrice = 150.00;
+    const filename = "secondSpecimen";
 
-    const rootElement = htmlDoc.createElement('transactions');
-    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
-    rootElement.appendChild(transactionElement);
-
-    const parser = new XMLSerializer();
-    const label = document.getElementById("specimenLbl");
-    label.innerText = parser.serializeToString(rootElement);
-    label.style.color = "green";
+    generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename);
 }
 
 function generateThirdSpecimen() {
@@ -521,15 +516,9 @@ function generateThirdSpecimen() {
     const amenitiesCount = 5;
     const minPrice = 85.00;
     const maxPrice = 360.00;
+    const filename = "thirdSpecimen";
 
-    const rootElement = htmlDoc.createElement('transactions');
-    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
-    rootElement.appendChild(transactionElement);
-
-    const parser = new XMLSerializer();
-    const label = document.getElementById("specimenLbl");
-    label.innerText = parser.serializeToString(rootElement);
-    label.style.color = "blue";
+    generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename);
 }
 
 function generateFourthSpecimen() {
@@ -538,15 +527,9 @@ function generateFourthSpecimen() {
     const amenitiesCount = 10;
     const minPrice = 1000.00;
     const maxPrice = 1500.00;
+    const filename = "fourthSpecimen";
 
-    const rootElement = htmlDoc.createElement('transactions');
-    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
-    rootElement.appendChild(transactionElement);
-
-    const parser = new XMLSerializer();
-    const label = document.getElementById("specimenLbl");
-    label.innerText = parser.serializeToString(rootElement);
-    label.style.color = "black";
+    generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename);
 }
 
 function generateFifthSpecimen() {
@@ -555,13 +538,21 @@ function generateFifthSpecimen() {
     const amenitiesCount = 4;
     const minPrice = 10.00;
     const maxPrice = 50.00;
+    const filename = "fifthSpecimen";
 
-    const rootElement = htmlDoc.createElement('transactions');
-    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
-    rootElement.appendChild(transactionElement);
+    generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename);
+}
 
-    const parser = new XMLSerializer();
-    const label = document.getElementById("specimenLbl");
-    label.innerText = parser.serializeToString(rootElement);
-    label.style.color = "orange";
+function downloadXMLFile(xmlContent, filename) {
+    const blob = new Blob([xmlContent], {type: 'application/xml'});
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
 }
