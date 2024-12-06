@@ -455,16 +455,16 @@ function generateTransaction(htmlDoc, lang, min, max, roomsCount, floorsCount, a
     return transactionElement;
 }
 
-const documentImplementation = document.implementation;
-const htmlDoc = documentImplementation.createDocument(null, null);
-
-const PItext = "version=\"1.0\" encoding=\"UTF-8\"";
-const processingInstructions = htmlDoc.createProcessingInstruction('xml', PItext);
-htmlDoc.insertBefore(processingInstructions, htmlDoc.documentElement);
-
 const lang = "BG";
 
 function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename) {
+    const documentImplementation = document.implementation;
+    const htmlDoc = documentImplementation.createDocument(null, null);
+
+    const PItext = "version=\"1.0\" encoding=\"UTF-8\"";
+    const processingInstructions = htmlDoc.createProcessingInstruction('xml', PItext);
+    htmlDoc.insertBefore(processingInstructions, htmlDoc.documentElement);
+
     const rootElement = htmlDoc.createElement('transactions');
     rootElement.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
     rootElement.setAttribute('xsi:noNamespaceSchemaLocation', 'reservations.xsd');
