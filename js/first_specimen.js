@@ -1,3 +1,5 @@
+// Generated test data - countries, towns, streets, district areas, amenities, hotel names, IBANs, payingTools,
+// currencies, names, families, email domains, phones and english to bulgarian alphabet map
 const countriesEN = [
     "Canada", "Germany", "France", "Brazil", "India", "Russia", "Japan", "Mexico", "Egypt", "Italy"
 ];
@@ -31,6 +33,14 @@ const townsBG = {
     "Египет": ["Кайро", "Александрия", "Гиза", "Шармелшейх", "Луксор"],
     "Италия": ["Рим", "Милан", "Флоренция", "Венеция", "Неапол"]
 };
+
+const streetsEN = ["Main Street", "Broadway", "Elm Street", "Park Avenue", "5th Avenue", "Baker Street", "Ocean Drive", "Maple Street", "King Street", "Sunset Boulevard"];
+
+const streetsBG = ["Главна улица", "Бродвей", " Елм улица", "Парк авеню", "5-та авеню", "Бейкър стрийт", "Оушън драйв", "Кленова улица", "Кинг стрийт", "Сънсет булевард"];
+
+const districtsEN = ["Downtown", "Uptown", "Midtown", "Suburb", "Old Town", "Industrial Zone", "West Side", "East End", "North End", "South Side"];
+
+const districtsBG = ["Център", "Северна част", "Южна част", "Източна част", "Западна част", "Стара част", "Индустриална зона", "Нов квартал", "Площад", "Младост"];
 
 const amenitiesInBG = ["Интернет", "Климатик", "Паркинг", "Закуска", "Басейн", "Фитнес", "Спа", "Ресторант", "Бар", "Сейф",
     "Минибар", "Пералня", "Транспорт", "Портиер", "Телевизор", "Тераса", "Джакузи", "Градина", "Шезлонги", "Чадъри", "Румсервиз"];
@@ -102,6 +112,10 @@ const englishFamilies = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garc
     "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts"
 ];
 
+const emailDomains = ["@gmail.com", "@yahoo.com", "@hotmail.com", "@aol.com", "@outlook.com", "@icloud.com",
+    "@live.com", "@hotmail.co.uk", "@sbcglobal.net", "@me.com", "@att.net", "@mail.ru", "@bellsouth.net",
+    "@rediffmail.com", "@cox.net"];
+
 const phones = ["+359887654321", "0887654321", "+359889123456", "0889123456", "+359878456789", "0878456789",
     "+359876543210", "0876543210", "+359889876543", "0889876543", "+359878123456", "0878123456", "+359877654321",
     "0877654321", "+359889654321", "0889654321", "+359878987654", "0878987654", "+359876123456", "0876123456",
@@ -121,24 +135,7 @@ const bulgarianToEnglishMap = {
     'ъ': 'a', 'ь': 'y', 'ю': 'yu', 'я': 'ya'
 };
 
-const emailDomains = ["@gmail.com", "@yahoo.com", "@hotmail.com", "@aol.com", "@outlook.com", "@icloud.com",
-    "@live.com", "@hotmail.co.uk", "@sbcglobal.net", "@me.com", "@att.net", "@mail.ru", "@bellsouth.net",
-    "@rediffmail.com", "@cox.net"];
-
-const streetsEN = ["Main Street", "Broadway", "Elm Street", "Park Avenue", "5th Avenue", "Baker Street", "Ocean Drive", "Maple Street", "King Street", "Sunset Boulevard"];
-
-const districtsEN = ["Downtown", "Uptown", "Midtown", "Suburb", "Old Town", "Industrial Zone", "West Side", "East End", "North End", "South Side"];
-
-const streetsBG = ["Главна улица", "Бродвей", " Елм улица", "Парк авеню", "5-та авеню", "Бейкър стрийт", "Оушън драйв", "Кленова улица", "Кинг стрийт", "Сънсет булевард"];
-
-const districtsBG = ["Център", "Северна част", "Южна част", "Източна част", "Западна част", "Стара част", "Индустриална зона", "Нов квартал", "Площад", "Младост"];
-
-function generateRoomType() {
-    const roomTypes = ["apartment", "single", "double", "deluxe", "president"];
-    const randomIndex = Math.floor(Math.random() * roomTypes.length);
-    return roomTypes[randomIndex];
-}
-
+// Helper functions - generates a small part of the whole xml file
 function generateRoomNo(roomsCount) {
     return Math.floor(Math.random() * roomsCount);
 }
@@ -160,21 +157,6 @@ function generateRoomMaxCapacity(roomType) {
         case "single":
         default:
             return 1;
-    }
-}
-
-function generateAmenity(lang) {
-    let randomIndex;
-    switch (lang) {
-        case "BG": {
-            randomIndex = Math.floor(Math.random() * amenitiesInBG.length);
-            return amenitiesInBG[randomIndex];
-        }
-        case "EN":
-        default: {
-            randomIndex = Math.floor(Math.random() * amenitiesInEN.length);
-            return amenitiesInEN[randomIndex];
-        }
     }
 }
 
@@ -266,6 +248,41 @@ function generateHotel(htmlDoc, lang) {
     return hotelElement;
 }
 
+function generateAmenity(lang) {
+    let randomIndex;
+    switch (lang) {
+        case "BG": {
+            randomIndex = Math.floor(Math.random() * amenitiesInBG.length);
+            return amenitiesInBG[randomIndex];
+        }
+        case "EN":
+        default: {
+            randomIndex = Math.floor(Math.random() * amenitiesInEN.length);
+            return amenitiesInEN[randomIndex];
+        }
+    }
+}
+
+function generateCurrencyName() {
+    const randomIndex = Math.floor(Math.random() * currencies.length);
+
+    return currencies[randomIndex];
+}
+
+function generatePriceValue(htmlDoc, min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+function generatePrice(htmlDoc, lang, min, max) {
+    const priceElement = htmlDoc.createElement('price');
+    priceElement.setAttribute('currency', generateCurrencyName());
+
+    const value = generatePriceValue(htmlDoc, min, max);
+    priceElement.appendChild(htmlDoc.createTextNode(value));
+
+    return priceElement;
+}
+
 function generateRoom(htmlDoc, lang, min, max, roomMaxCapacity, type, roomsCount, floorsCount, amenitiesCount) {
     const roomElement = htmlDoc.createElement('room');
 
@@ -307,79 +324,6 @@ function generateRoom(htmlDoc, lang, min, max, roomMaxCapacity, type, roomsCount
     return roomElement;
 }
 
-function generateGuest(htmlDoc, lang) {
-    const guestElement = htmlDoc.createElement('guest');
-
-    const name = generateName(lang);
-    guestElement.setAttribute('name', name);
-
-    const family = generateFamily(lang);
-    guestElement.setAttribute('family', family);
-
-    const email = generateEmail(name, family);
-    guestElement.setAttribute('email', email);
-
-    const phone = generatePhone();
-    guestElement.setAttribute('phone', phone);
-
-    return guestElement;
-}
-
-function generatePayingTool() {
-    const randomIndex = Math.floor(Math.random() * payingTools.length);
-    return payingTools[randomIndex];
-}
-
-function generateIBAN(htmlDoc) {
-    const IBANElement = htmlDoc.createElement('iban');
-    const randomIndex = Math.floor(Math.random() * IBANs.length);
-    IBANElement.appendChild(htmlDoc.createTextNode(IBANs[randomIndex]));
-
-    return IBANElement;
-}
-
-function generateBalance(htmlDoc, min, max) {
-    const balanceElement = htmlDoc.createElement('balance');
-    balanceElement.appendChild(htmlDoc.createTextNode(Math.random() * (max - min) + min));
-
-    return balanceElement;
-}
-
-function generateCurrencyName() {
-    const randomIndex = Math.floor(Math.random() * currencies.length);
-
-    return currencies[randomIndex];
-}
-
-function generatePriceValue(htmlDoc, min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-}
-
-function generatePrice(htmlDoc, lang, min, max) {
-    const priceElement = htmlDoc.createElement('price');
-    priceElement.setAttribute('currency', generateCurrencyName());
-
-    const value = generatePriceValue(htmlDoc, min, max);
-    priceElement.appendChild(htmlDoc.createTextNode(value));
-
-    return priceElement;
-}
-
-function generateDebitCard(htmlDoc, min, max) {
-    const debitCardElement = htmlDoc.createElement('card');
-
-    const ibanElement = generateIBAN(htmlDoc);
-    debitCardElement.appendChild(ibanElement);
-
-    const balanceElement = generateBalance(htmlDoc, min, max);
-    debitCardElement.appendChild(balanceElement);
-
-    const currency = generateCurrencyName();
-    debitCardElement.setAttribute('currency', currency)
-
-    return debitCardElement;
-}
-
 function generateName(lang) {
     let randomIndex;
     if (lang === "BG") {
@@ -402,11 +346,6 @@ function generateFamily(lang) {
     }
 }
 
-function generatePhone() {
-    const randomIndex = Math.floor(Math.random() * phones.length);
-    return phones[randomIndex];
-}
-
 function translateBulgarianToEnglish(firstName, secondName) {
     function translateName(name) {
         return name.split('').map(char => bulgarianToEnglishMap[char] || char).join('');
@@ -425,6 +364,29 @@ function generateEmail(name, family) {
     return translatedNames.translatedFirstName + "." + translatedNames.translatedSecondName + emailDomains[randomIndex];
 }
 
+function generatePhone() {
+    const randomIndex = Math.floor(Math.random() * phones.length);
+    return phones[randomIndex];
+}
+
+function generateGuest(htmlDoc, lang) {
+    const guestElement = htmlDoc.createElement('guest');
+
+    const name = generateName(lang);
+    guestElement.setAttribute('name', name);
+
+    const family = generateFamily(lang);
+    guestElement.setAttribute('family', family);
+
+    const email = generateEmail(name, family);
+    guestElement.setAttribute('email', email);
+
+    const phone = generatePhone();
+    guestElement.setAttribute('phone', phone);
+
+    return guestElement;
+}
+
 function generateReservation(htmlDoc, lang, min, max, type, roomMaxCapacity, roomsCount, floorsCount, amenitiesCount) {
     const reservationElement = htmlDoc.createElement('reservation');
 
@@ -439,6 +401,47 @@ function generateReservation(htmlDoc, lang, min, max, type, roomMaxCapacity, roo
     }
 
     return reservationElement;
+}
+
+function generatePayingTool() {
+    const randomIndex = Math.floor(Math.random() * payingTools.length);
+    return payingTools[randomIndex];
+}
+
+function generateRoomType() {
+    const roomTypes = ["apartment", "single", "double", "deluxe", "president"];
+    const randomIndex = Math.floor(Math.random() * roomTypes.length);
+    return roomTypes[randomIndex];
+}
+
+function generateIBAN(htmlDoc) {
+    const IBANElement = htmlDoc.createElement('iban');
+    const randomIndex = Math.floor(Math.random() * IBANs.length);
+    IBANElement.appendChild(htmlDoc.createTextNode(IBANs[randomIndex]));
+
+    return IBANElement;
+}
+
+function generateBalance(htmlDoc, min, max) {
+    const balanceElement = htmlDoc.createElement('balance');
+    balanceElement.appendChild(htmlDoc.createTextNode(Math.random() * (max - min) + min));
+
+    return balanceElement;
+}
+
+function generateDebitCard(htmlDoc, min, max) {
+    const debitCardElement = htmlDoc.createElement('card');
+
+    const ibanElement = generateIBAN(htmlDoc);
+    debitCardElement.appendChild(ibanElement);
+
+    const balanceElement = generateBalance(htmlDoc, min, max);
+    debitCardElement.appendChild(balanceElement);
+
+    const currency = generateCurrencyName();
+    debitCardElement.setAttribute('currency', currency)
+
+    return debitCardElement;
 }
 
 function generateTransaction(htmlDoc, lang, min, max, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice) {
@@ -461,6 +464,23 @@ function generateTransaction(htmlDoc, lang, min, max, roomsCount, floorsCount, a
 
 const lang = "BG";
 
+// downloads a specific XML file
+function downloadXMLFile(xmlContent, filename) {
+    const blob = new Blob([xmlContent], {type: 'application/xml'});
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+}
+
+// generates a hotel specimen by definite parameters - rooms count in a hotel, floors count in a hotel, amenities count
+// in a regular hotel room, min price per a night in the hotel, max price per night in the hotel
 function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename) {
     const documentImplementation = document.implementation;
     const htmlDoc = documentImplementation.createDocument(null, null);
@@ -496,6 +516,7 @@ function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, max
     downloadXMLFile(xmlContent, filename);
 }
 
+// specific functions that generates each of the specimens
 function generateFirstSpecimen() {
     const roomsCount = 150;
     const floorsCount = 10;
@@ -549,18 +570,4 @@ function generateFifthSpecimen() {
     const filename = "fifthSpecimen";
 
     generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename);
-}
-
-function downloadXMLFile(xmlContent, filename) {
-    const blob = new Blob([xmlContent], {type: 'application/xml'});
-
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
 }
