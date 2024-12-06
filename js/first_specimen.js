@@ -36,7 +36,7 @@ function generateAmenity(lang) {
         "Housekeeping", "Laundry", "Shuttle", "Breakfast", "Bar", "Minibar", "Safe", "Jacuzzi", "Sauna", "Garden", "Library", "Fireplace",
         "Desk", "Elevator", "Fitness", "Beach", "Tennis", "Cinema", "Golf", "Boutique"];
 
-    let randomIndex = 0;
+    let randomIndex;
     switch (lang) {
         case "BG": {
             randomIndex = Math.floor(Math.random() * amenitiesInBG.length);
@@ -59,7 +59,7 @@ function generateHotelName(lang) {
         "Paradise", "Gold", "Alpina", "Edelweiss", "Lily", "Romantic", "Crystal", "Diamond", "Sapphire", "Aquarelle",
         "Galaxy", "Moon", "Star", "Tropic", "Samokov", "Delta", "Prestige", "Comfort", "Energy", "Modern", "Seagull"];
 
-    let randomIndex = 0;
+    let randomIndex;
     switch (lang) {
         case "BG": {
             randomIndex = Math.floor(Math.random() * hotelNamesBG.length);
@@ -108,7 +108,7 @@ const townsBG = {
 };
 
 function generateCountry(lang) {
-    let randomIndex = 0;
+    let randomIndex;
     switch (lang) {
         case "EN": {
             randomIndex = Math.floor(Math.random() * countriesEN.length);
@@ -289,15 +289,11 @@ function generateBalance(htmlDoc, min, max) {
     return balanceElement;
 }
 
-function generateCurrencyName(htmlDoc) {
+function generateCurrencyName() {
     const currencies = ["USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNY", "SEK", "NZD"];
     const randomIndex = Math.floor(Math.random() * currencies.length);
 
     return currencies[randomIndex];
-}
-
-function generateCurrency(htmlDoc) {
-    return generateCurrencyName(htmlDoc);
 }
 
 function generatePriceValue(htmlDoc, min, max) {
@@ -306,7 +302,7 @@ function generatePriceValue(htmlDoc, min, max) {
 
 function generatePrice(htmlDoc, lang, min, max) {
     const priceElement = htmlDoc.createElement('price');
-    priceElement.setAttribute('currency', generateCurrency(htmlDoc));
+    priceElement.setAttribute('currency', generateCurrencyName());
 
     const value = generatePriceValue(htmlDoc, min, max);
     priceElement.appendChild(htmlDoc.createTextNode(value));
@@ -323,7 +319,7 @@ function generateDebitCard(htmlDoc, min, max) {
     const balanceElement = generateBalance(htmlDoc, min, max);
     debitCardElement.appendChild(balanceElement);
 
-    const currency = generateCurrency(htmlDoc);
+    const currency = generateCurrencyName();
     debitCardElement.setAttribute('currency', currency)
 
     return debitCardElement;
@@ -344,7 +340,7 @@ function generateName(lang) {
         "Evan", "Ramona", "Anthony", "Wendy", "Zachary", "Katie", "Nina", "Lawrence", "Sonia", "Timothy"
     ];
 
-    let randomIndex = 0;
+    let randomIndex;
     if (lang === "BG") {
         randomIndex = Math.floor(Math.random() * bulgarianNames.length);
         return bulgarianNames[randomIndex];
@@ -369,7 +365,7 @@ function generateFamily(lang) {
         "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts"
     ];
 
-    let randomIndex = 0;
+    let randomIndex;
     if (lang === "BG") {
         randomIndex = Math.floor(Math.random() * bulgarianFamilies.length);
         return bulgarianFamilies[randomIndex];
