@@ -444,7 +444,8 @@ function generateDebitCard(htmlDoc, min, max) {
     return debitCardElement;
 }
 
-function generateTransaction(htmlDoc, lang, min, max, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice) {
+function generateTransaction(htmlDoc, lang, minPricePerNight, maxPricePerNight, roomsCount, floorsCount,
+                             amenitiesCount, minBalance, maxBalance) {
     const transactionIDStep = 1000;
     const roomType = generateRoomType();
     const roomMaxCapacity = generateRoomMaxCapacity(roomType);
@@ -453,10 +454,11 @@ function generateTransaction(htmlDoc, lang, min, max, roomsCount, floorsCount, a
     transactionElement.setAttribute('id', Math.floor(Math.random() * transactionIDStep));
     transactionElement.setAttribute('payingTool', generatePayingTool());
 
-    const reservationElement = generateReservation(htmlDoc, lang, min, max, roomType, roomMaxCapacity, roomsCount, floorsCount, amenitiesCount);
+    const reservationElement = generateReservation(htmlDoc, lang, minPricePerNight, maxPricePerNight, roomType,
+        roomMaxCapacity, roomsCount, floorsCount, amenitiesCount);
     transactionElement.appendChild(reservationElement);
 
-    const cardElement = generateDebitCard(htmlDoc, minPrice, maxPrice);
+    const cardElement = generateDebitCard(htmlDoc, minBalance, maxBalance);
     transactionElement.appendChild(cardElement);
 
     return transactionElement;
@@ -492,10 +494,11 @@ function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, max
     const rootElement = htmlDoc.createElement('transactions');
     rootElement.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
     rootElement.setAttribute('xsi:noNamespaceSchemaLocation', 'reservations.xsd');
-    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice);
+    const transactionElement = generateTransaction(htmlDoc, lang, minPrice, maxPrice, roomsCount, floorsCount,
+        amenitiesCount, minPrice, maxPrice);
     rootElement.appendChild(transactionElement);
 
-    const parser = new XMLSerializer();
+    const xmlSerializer = new XMLSerializer();
 
     const header = document.getElementById("specimenHeader");
     switch (filename) {
@@ -509,10 +512,10 @@ function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, max
 
     header.style.color = "green";
 
-    const label = document.getElementById("specimenParagraph");
+    const contentParagraph = document.getElementById("specimenParagraph");
     htmlDoc.appendChild(rootElement);
-    const xmlContent = parser.serializeToString(htmlDoc);
-    label.innerText = xmlContent;
+    const xmlContent = xmlSerializer.serializeToString(htmlDoc);
+    contentParagraph.innerText = xmlContent;
     downloadXMLFile(xmlContent, filename);
 }
 
