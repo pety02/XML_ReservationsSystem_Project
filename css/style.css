@@ -3,11 +3,12 @@
     flex-wrap: nowrap;
     gap: 2rem;
     margin-top: 2rem;
+    margin-left: 1.5rem;
 }
 .card {
     flex: 0 0 auto;
     border: 1px solid #ddd;
-    padding: 1rem;
+    padding: 0.5rem;
     color: red;
 }
 .card-body {

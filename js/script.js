@@ -365,11 +365,11 @@ function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, max
 
     const header = document.getElementById("specimenHeader");
     switch (filename) {
-        case "firstSpecimen": header.innerText = "First Hotel Specimen:\n"; break;
-        case "secondSpecimen": header.innerText = "Second Hotel Specimen:\n"; break;
-        case "thirdSpecimen": header.innerText = "Third Hotel Specimen:\n"; break;
-        case "fourthSpecimen": header.innerText = "Fourth Hotel Specimen\n"; break;
-        case "fifthSpecimen": header.innerText = "Fifth Hotel Specimen\n"; break;
+        case "firstSpecimen": header.innerText = "Екземпляр на първия хотел:\n"; break;
+        case "secondSpecimen": header.innerText = "Екземпляр на втория хотел:\n"; break;
+        case "thirdSpecimen": header.innerText = "Екземпляр на третия хотел:\n"; break;
+        case "fourthSpecimen": header.innerText = "Екземпляр на четвъртия хотел:\n"; break;
+        case "fifthSpecimen": header.innerText = "Екземпляр на петия хотел:\n"; break;
         default: break;
     }
 
