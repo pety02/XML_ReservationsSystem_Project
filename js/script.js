@@ -329,6 +329,29 @@ function generateTransaction(htmlDoc, lang, minPricePerNight, maxPricePerNight, 
 
 const lang = "BG";
 
+// formats the XML content
+function formatXML(xmlString) {
+    const PADDING = "  ";
+    let formatted = "";
+    const regex = /(>)(<)(\/*)/g;
+    xmlString = xmlString.replace(regex, "$1\n$2$3");
+
+    let pad = 0;
+    xmlString.split("\n").forEach((line) => {
+        if (line.match(/<\/\w/)) {
+            pad -= 1;
+        }
+
+        formatted += PADDING.repeat(pad) + line.trim() + "\n";
+
+        if (line.match(/<\w[^>]*[^/]>.*$/)) {
+            pad += 1;
+        }
+    });
+
+    return formatted.trim();
+}
+
 // downloads a specific XML file
 function downloadXMLFile(xmlContent, filename) {
     const blob = new Blob([xmlContent], {type: 'application/xml'});
@@ -377,7 +400,7 @@ function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, max
 
     const contentParagraph = document.getElementById("specimenParagraph");
     htmlDoc.appendChild(rootElement);
-    const xmlContent = xmlSerializer.serializeToString(htmlDoc);
+    const xmlContent = formatXML(xmlSerializer.serializeToString(htmlDoc));
     contentParagraph.innerText = xmlContent;
     downloadXMLFile(xmlContent, filename);
 }
