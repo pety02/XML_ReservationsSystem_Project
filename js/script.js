@@ -388,17 +388,29 @@ function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, max
 
     const header = document.getElementById("specimenHeader");
     switch (filename) {
-        case "firstSpecimen": header.innerText = "Екземпляр на първия хотел:\n"; break;
-        case "secondSpecimen": header.innerText = "Екземпляр на втория хотел:\n"; break;
-        case "thirdSpecimen": header.innerText = "Екземпляр на третия хотел:\n"; break;
-        case "fourthSpecimen": header.innerText = "Екземпляр на четвъртия хотел:\n"; break;
-        case "fifthSpecimen": header.innerText = "Екземпляр на петия хотел:\n"; break;
-        default: break;
+        case "firstSpecimen":
+            header.innerText = "Екземпляр на първия хотел:\n";
+            break;
+        case "secondSpecimen":
+            header.innerText = "Екземпляр на втория хотел:\n";
+            break;
+        case "thirdSpecimen":
+            header.innerText = "Екземпляр на третия хотел:\n";
+            break;
+        case "fourthSpecimen":
+            header.innerText = "Екземпляр на четвъртия хотел:\n";
+            break;
+        case "fifthSpecimen":
+            header.innerText = "Екземпляр на петия хотел:\n";
+            break;
+        default:
+            break;
     }
 
     header.style.color = "green";
 
     const contentParagraph = document.getElementById("specimenParagraph");
+    contentParagraph.style.display = "block";
     htmlDoc.appendChild(rootElement);
     const xmlContent = formatXML(xmlSerializer.serializeToString(htmlDoc));
     contentParagraph.innerText = xmlContent;
