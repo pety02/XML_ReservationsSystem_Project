@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="reservation.xsl"?>
 
 <transactions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:noNamespaceSchemaLocation="reservations.xsd">
@@ -25,10 +26,9 @@
                 <guest name="Mihaela" family="Georgieva"/>
             </guests>
         </reservation>
-        <card>
+        <card currency="BGN">
             <iban>BG12FNL89655</iban>
             <balance>1500.00</balance>
-            <currency>BGN</currency>
         </card>
     </transaction>
 </transactions>
