@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-    <xsl:output method="html" indent="yes"/>
+    <xsl:output method="html" encoding="UTF-8" indent="yes"/>
 
-    <!-- Main Template -->
+    <!-- First XSLT Transformation Template: from XML to HTML -->
     <xsl:template match="/transactions/transaction">
         <html>
             <head>
-                <meta charset="UTF-8"/>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -22,7 +21,7 @@
         </html>
     </xsl:template>
 
-    <!-- Room Details -->
+    <!-- Second XSLT Transformation Template: from XML to HTML -->
     <xsl:template match="reservation/room">
         <h3><strong>Room Details:</strong></h3>
         <table class="table">
@@ -76,7 +75,7 @@
         </div>
     </xsl:template>
 
-    <!-- Guests -->
+    <!-- Third XSLT Transformation Template: from XML to HTML -->
     <xsl:template match="reservation/guests">
         <div style="display: inline-block; margin-left: 5rem;">
             <h3><strong>Guests:</strong></h3>
@@ -86,7 +85,7 @@
         </div>
     </xsl:template>
 
-    <!-- Card Details -->
+    <!-- Fourth XSLT Transformation Template: from XML to HTML -->
     <xsl:template match="card">
         <div style="display: inline-block; margin-left: 5rem;">
             <h3><strong>Paying Details:</strong></h3>
