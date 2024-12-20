@@ -20,24 +20,9 @@
             </xsl:for-each>
             <xsl:text>&#10;</xsl:text>
             Payed By: <xsl:value-of select="reservation/guests/guest[@email or @phone]/@name"/>
-                <xsl:text> </xsl:text><xsl:value-of select="reservation/guests/guest[@email or @phone]/@family"/>
+            <xsl:text> </xsl:text><xsl:value-of select="reservation/guests/guest[@email or @phone]/@family"/>
             Card Balance: <xsl:value-of select="card/balance" /> <xsl:text> (</xsl:text> <xsl:value-of select="card/@currency"/> <xsl:text>)</xsl:text>
             <xsl:text>&#10;</xsl:text>
         </xsl:for-each>
     </xsl:template>
-
-    <!-- Second XSLT Transformation Template: from XML to Plain Text -->
-    <xsl:template match="/">
-        Room No: <xsl:value-of select="/transactions/transaction/reservation/room/roomNo" />
-        Floor No: <xsl:value-of select="/transactions/transaction/reservation/room/floorNo" />
-        Max Capacity: <xsl:value-of select="/transactions/transaction/reservation/room/maxCapacity" />
-        Has Personal Bath: <xsl:value-of select="/transactions/transaction/reservation/room/hasPersonalBath" />
-        Amenities:
-        <xsl:for-each select="/transactions/transaction/reservation/room/amenities/amenity">
-            <xsl:value-of select="." />
-            <xsl:text>; </xsl:text>
-        </xsl:for-each>
-        <xsl:text>&#10;</xsl:text>
-    </xsl:template>
-
 </xsl:stylesheet>

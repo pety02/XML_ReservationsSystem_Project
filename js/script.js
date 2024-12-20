@@ -367,6 +367,35 @@ function downloadXMLFile(xmlContent, filename) {
     URL.revokeObjectURL(link.href);
 }
 
+function transformXMLString(xmlString, xsl) {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlString, "application/xml");
+
+    if (window.ActiveXObject || "ActiveXObject" in window) { // For IE
+        const xsltProcessor = new ActiveXObject("Msxml2.XSLTemplate.6.0");
+        const xslDoc = new ActiveXObject("Msxml2.FreeThreadedDOMDocument.6.0");
+        const xmlDoc = new ActiveXObject("Msxml2.DOMDocument.6.0");
+
+        xslDoc.loadXML(xsl);
+        xmlDoc.loadXML(xmlString);
+
+        xsltProcessor.stylesheet = xslDoc;
+        const output = xsltProcessor.createProcessor();
+        output.input = xmlDoc;
+        output.transform();
+
+        document.getElementById("specimenParagraph").textContent = output.output;
+    } else if (document.implementation && document.implementation.createDocument) {
+        const xsltProcessor = new XSLTProcessor();
+        xsltProcessor.importStylesheet(xsl);
+        const resultDocument = xsltProcessor.transformToFragment(xml, document);
+        document.getElementById("specimenParagraph").innerHTML = "";
+        document.getElementById("specimenParagraph").appendChild(resultDocument);
+    } else {
+        alert("XSLT transformations are not supported in your browser.");
+    }
+}
+
 // generates a hotel specimen by definite parameters - rooms count in a hotel, floors count in a hotel, amenities count
 // in a regular hotel room, min price per a night in the hotel, max price per night in the hotel
 function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, maxPrice, filename) {
@@ -413,8 +442,32 @@ function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, max
     contentParagraph.style.display = "block";
     htmlDoc.appendChild(rootElement);
     const xmlContent = formatXML(xmlSerializer.serializeToString(htmlDoc));
-    contentParagraph.innerText = xmlContent;
     downloadXMLFile(xmlContent, filename);
+
+    const transformationSelect = document.getElementById('transformation_format_select').value;
+    if(transformationSelect === 'конвертирай до HTML формат') {
+        loadFile("xml-to-html.xsl", function (xsl) {
+            transformXMLString(xmlContent, xsl);
+        });
+    } else if (transformationSelect === 'конвертирай до XML формат (информация за транзакцията)') {
+        loadFile("xml-to-transaction-xml.xsl", function (xsl) {
+            transformXMLString(xmlContent, xsl);
+        });
+    } else if (transformationSelect === 'конвертирай до XML формат (информация за наетата стая)') {
+        loadFile("xml-to-room-xml.xsl", function (xsl) {
+            transformXMLString(xmlContent, xsl);
+        });
+    } else if (transformationSelect === 'конвертирай до Plain Text формат (информация за транзакцията)') {
+        loadFile("xml-to-transaction-plain-text.xsl", function (xsl) {
+            transformXMLString(xmlContent, xsl);
+        });
+    } else if (transformationSelect === 'конвертирай до Plain Text формат (информация за наетата стая)') {
+        loadFile("xml-to-room-plain-text.xsl", function (xsl) {
+            transformXMLString(xmlContent, xsl);
+        });
+    } else {
+        alert('Моля изберете в какъв формат предпочитате да виждате данните за генерираните резервации!');
+    }
 }
 
 // specific functions that generates each of the specimens

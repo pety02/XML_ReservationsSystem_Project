@@ -23,23 +23,4 @@
             </xsl:for-each>
         </transactions>
     </xsl:template>
-
-    <!-- Second XSLT Transformation Template: from XML to other XML format -->
-    <xsl:template match="/">
-        <rooms>
-            <xsl:for-each select="transactions/transaction/reservation/room">
-                <room>
-                    <roomNumber><xsl:value-of select="roomNo" /></roomNumber>
-                    <floorNumber><xsl:value-of select="floorNo" /></floorNumber>
-                    <maxCapacity><xsl:value-of select="maxCapacity" /></maxCapacity>
-                    <hasPersonalBath><xsl:value-of select="hasPersonalBath" /></hasPersonalBath>
-                    <amenities>
-                        <xsl:for-each select="../amenities/amenity">
-                            <amenity><xsl:value-of select="." /></amenity>
-                        </xsl:for-each>
-                    </amenities>
-                </room>
-            </xsl:for-each>
-        </rooms>
-    </xsl:template>
 </xsl:transform>
