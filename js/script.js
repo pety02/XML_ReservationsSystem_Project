@@ -445,8 +445,20 @@ function generateSpecimen(roomsCount, floorsCount, amenitiesCount, minPrice, max
     downloadXMLFile(xmlContent, filename);
 
     const transformationSelect = document.getElementById('transformation_format_select').value;
-    if(transformationSelect === 'конвертирай до HTML формат') {
-        loadFile("xml-to-html.xsl", function (xsl) {
+    if(transformationSelect === 'конвертирай до първия HTML формат') {
+        loadFile("first-xml-to-html.xsl", function (xsl) {
+            transformXMLString(xmlContent, xsl);
+        });
+    } else if(transformationSelect === 'конвертирай до втория HTML формат') {
+        loadFile("second-xml-to-html.xsl", function (xsl) {
+            transformXMLString(xmlContent, xsl);
+        });
+    } else if(transformationSelect === 'конвертирай до третия HTML формат') {
+        loadFile("third-xml-to-html.xsl", function (xsl) {
+            transformXMLString(xmlContent, xsl);
+        });
+    } else if(transformationSelect === 'конвертирай до четвъртия HTML формат') {
+        loadFile("fourth-xml-to-html.xsl", function (xsl) {
             transformXMLString(xmlContent, xsl);
         });
     } else if (transformationSelect === 'конвертирай до XML формат (информация за транзакцията)') {

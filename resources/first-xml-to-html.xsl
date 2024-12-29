@@ -2,7 +2,6 @@
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html" encoding="UTF-8" indent="yes"/>
 
-    <!-- First XSLT Transformation Template: from XML to HTML -->
     <xsl:template match="/transactions/transaction">
         <html>
             <head>
@@ -21,7 +20,6 @@
         </html>
     </xsl:template>
 
-    <!-- Second XSLT Transformation Template: from XML to HTML -->
     <xsl:template match="reservation/room">
         <h3><strong>Room Details:</strong></h3>
         <table class="table">
@@ -55,7 +53,6 @@
         </table>
         <hr style="border: 1px solid gray;"/>
 
-        <!-- Hotel Details -->
         <div style="display: inline-block;">
             <h3><strong>Hotel:</strong></h3>
             <p>
@@ -66,7 +63,6 @@
             </p>
         </div>
 
-        <!-- Amenities Details -->
         <div style="display: inline-block; margin-left: 5rem;">
             <h3><strong>Amenities:</strong></h3>
             <xsl:for-each select="amenities/amenity">
@@ -75,17 +71,15 @@
         </div>
     </xsl:template>
 
-    <!-- Third XSLT Transformation Template: from XML to HTML -->
     <xsl:template match="reservation/guests">
         <div style="display: inline-block; margin-left: 5rem;">
             <h3><strong>Guests:</strong></h3>
             <xsl:for-each select="guest">
-                <span><xsl:value-of select="@name"/> <xsl:value-of select="@family"/></span><br/>
+                <span><xsl:value-of select="concat(@name, ' ', @family)"/></span><br/>
             </xsl:for-each>
         </div>
     </xsl:template>
 
-    <!-- Fourth XSLT Transformation Template: from XML to HTML -->
     <xsl:template match="card">
         <div style="display: inline-block; margin-left: 5rem;">
             <h3><strong>Paying Details:</strong></h3>

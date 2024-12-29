@@ -23,7 +23,7 @@
             </room>
             <guests>
                 <guest name="Georgi" family="Ivanov" email="givanov@gmail.com" phone="0843589999"/>
-                <guest name="Mihaela1" family="Georgieva"/>
+                <guest name="Mihaela" family="Georgieva"/>
             </guests>
         </reservation>
         <card currency="BGN">
