@@ -24,7 +24,8 @@
                 <table class="table table-striped">
                     <tr><th>Floor No</th><td><xsl:value-of select="reservation/room/floorNo"/></td></tr>
                     <tr><th>Room No</th><td><xsl:value-of select="reservation/room/roomNo"/></td></tr>
-                    <tr><th>Price</th><td><xsl:value-of select="reservation/room/price"/> (<xsl:value-of select="reservation/room/price/@currency"/>)</td></tr>
+                    <tr><th>Price</th><td><xsl:value-of select="reservation/room/price"/>
+                        (<xsl:value-of select="reservation/room/price/@currency"/>)</td></tr>
                 </table>
 
                 <h2>Guest Information</h2>

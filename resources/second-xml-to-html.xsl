@@ -18,7 +18,8 @@
                 <ul>
                     <li><strong>Floor No:</strong> <xsl:value-of select="reservation/room/floorNo"/></li>
                     <li><strong>Room No:</strong> <xsl:value-of select="reservation/room/roomNo"/></li>
-                    <li><strong>Price:</strong> <xsl:value-of select="reservation/room/price"/> (<xsl:value-of select="reservation/room/price/@currency"/>)</li>
+                    <li><strong>Price:</strong> <xsl:value-of select="reservation/room/price"/>
+                        (<xsl:value-of select="reservation/room/price/@currency"/>)</li>
                 </ul>
 
                 <h2>Guests</h2>
@@ -31,7 +32,8 @@
                 <h2>Payment Details</h2>
                 <ul>
                     <li><strong>IBAN:</strong> <xsl:value-of select="card/iban"/></li>
-                    <li><strong>Balance:</strong> <xsl:value-of select="card/balance"/> (<xsl:value-of select="card/@currency"/>)</li>
+                    <li><strong>Balance:</strong> <xsl:value-of select="card/balance"/>
+                        (<xsl:value-of select="card/@currency"/>)</li>
                 </ul>
             </body>
         </html>
